@@ -1,0 +1,70 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+namespace Algoritm_Prima
+{
+    class Programm
+    {
+        static void Main()
+        {
+            int min = 0;
+            int n = 0, n_1 = 0, n_2 = 0, sum = 0;
+            int[,] m = null;
+            using (StreamReader sr = new StreamReader(@"C:\Users\Екатерина\Desktop\file 1.txt", Encoding.UTF8))
+            {
+                n = Convert.ToInt32(sr.ReadLine());
+                m = new int[n + 1, n + 1];
+                string str = null;
+                min = 100000;
+                while ((str = sr.ReadLine()) != null)
+                {
+                    string[] mass = str.Split(' ');
+                    int a = int.Parse(mass[0]), b = int.Parse(mass[1]), c = int.Parse(mass[2]);
+                    m[a, b] = c;
+                    if (c < min)
+                    {
+                        min = c;
+                        n_2 = b;
+                        n_1 = a;
+                    }
+                }
+            }
+            sum = min;
+            List<int> vertices = new List<int>
+            {
+                n_1,
+                n_2
+            };
+            List<int> all_vertices = new List<int>
+            {
+                1,2,3,4,5,6,7,8,9
+            };
+            while (vertices.Count != n)
+            {
+                int a = 0;
+                int loc_min = 10000;
+                foreach (int i in vertices)
+                {
+                    foreach (int j in all_vertices)
+                    {
+                        if (m[i, j] != 0 && !(vertices.Contains(j)) && m[i, j] < loc_min)
+                        {
+                            loc_min = m[i, j];
+                            a = j;
+                        }
+                        if (m[j, i] != 0 && !(vertices.Contains(j)) && m[j, i] < loc_min)
+                        {
+                            loc_min = m[j, i];
+                            a = j;
+                        }
+                    }
+
+                }
+                sum += loc_min;
+                vertices.Add(a);
+            }
+            Console.WriteLine(sum);
+        }
+    }
+}
